@@ -7,420 +7,159 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;0,800;0,900;1,300&display=swap" rel="stylesheet"/>
 <style>
-/* ─── Reset & Tokens ─────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --g:       #1DB954;
-  --g2:      #1ED760;
-  --glow:    rgba(29,185,84,0.4);
-  --bg:      #0A0A0A;
-  --s1:      #111111;
-  --s2:      #181818;
-  --s3:      #242424;
-  --s4:      #2A2A2A;
-  --border:  rgba(255,255,255,0.07);
-  --text:    #FFFFFF;
-  --sub:     #B3B3B3;
-  --dim:     #535353;
-  --r:       16px;
-  --font:    'Plus Jakarta Sans', sans-serif;
+  --g:#1DB954;--g2:#1ED760;--glow:rgba(29,185,84,0.4);
+  --bg:#0A0A0A;--s1:#111111;--s2:#181818;--s3:#242424;--s4:#2A2A2A;
+  --border:rgba(255,255,255,0.07);--text:#FFFFFF;--sub:#B3B3B3;--dim:#535353;
+  --font:'Plus Jakarta Sans',sans-serif;
 }
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ─── Ambient blobs ──────────────────────────────── */
-#blobs {
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-}
-.blob {
-  position: absolute; border-radius: 50%; filter: blur(130px);
-  animation: drift 20s ease-in-out infinite alternate;
-}
-.b1 { width:700px;height:700px;background:#1DB954;opacity:.13;top:-200px;left:-200px;animation-delay:0s; }
-.b2 { width:500px;height:500px;background:#1a4aff;opacity:.10;bottom:-100px;right:-100px;animation-delay:-7s; }
-.b3 { width:400px;height:400px;background:#b31db9;opacity:.09;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s; }
-
-@keyframes drift {
-  from { transform: translate(0,0) scale(1); }
-  to   { transform: translate(50px,30px) scale(1.1); }
-}
-
-/* ─── Layout wrapper ─────────────────────────────── */
-.wrap {
-  position: relative; z-index: 1;
-  max-width: 900px; margin: 0 auto;
-  padding: 0 24px;
-}
-
-/* ─── Nav ────────────────────────────────────────── */
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(10,10,10,0.85);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-inner {
-  max-width: 900px; margin: 0 auto; padding: 0 24px;
-  height: 64px; display: flex; align-items: center; justify-content: space-between;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 12px; text-decoration: none;
-}
-.nav-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: linear-gradient(135deg, #1DB954, #1a4aff, #b31db9);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 16px var(--glow);
-  flex-shrink: 0;
-}
-.nav-icon svg { width: 18px; height: 18px; }
-.nav-brand {
-  font-size: 1rem; font-weight: 800; letter-spacing: -0.02em;
-  background: linear-gradient(90deg, #1DB954, #1ED760);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.nav-links { display: flex; gap: 28px; }
-.nav-links a {
-  font-size: 13px; font-weight: 500; color: var(--sub);
-  text-decoration: none; transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--text); }
-
-/* ─── Hero ───────────────────────────────────────── */
-.hero {
-  text-align: center;
-  padding: 80px 0 60px;
-}
-
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(29,185,84,0.1); border: 1px solid rgba(29,185,84,0.25);
-  border-radius: 100px; padding: 6px 16px;
-  font-size: 12px; font-weight: 600; color: var(--g);
-  letter-spacing: 0.08em; text-transform: uppercase;
-  margin-bottom: 28px;
-  animation: fadeUp 0.6s ease both;
-}
-.hero-badge span { width: 6px; height: 6px; border-radius: 50%; background: var(--g); box-shadow: 0 0 6px var(--g); display: inline-block; }
-
-h1 {
-  font-size: clamp(2.8rem, 8vw, 5.5rem);
-  font-weight: 900; letter-spacing: -0.04em; line-height: 0.95;
-  background: linear-gradient(135deg, #fff 20%, #1DB954 55%, #1a4aff 90%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin-bottom: 20px;
-  animation: fadeUp 0.6s 0.1s ease both;
-}
-
-.hero-sub {
-  font-size: 1.1rem; color: var(--sub); font-weight: 400;
-  max-width: 440px; margin: 0 auto 44px; line-height: 1.65;
-  animation: fadeUp 0.6s 0.2s ease both;
-}
-
-@keyframes fadeUp {
-  from { opacity:0; transform: translateY(20px); }
-  to   { opacity:1; transform: translateY(0); }
-}
-
-/* ─── Big Spin Button ────────────────────────────── */
-.spin-wrap {
-  display: flex; flex-direction: column; align-items: center; gap: 16px;
-  animation: fadeUp 0.6s 0.3s ease both;
-  margin-bottom: 64px;
-}
-
-#spin-btn {
-  position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #1DB954, #158a3e);
-  border: none; border-radius: 100px;
-  color: #000; font-family: var(--font);
-  font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em;
-  padding: 20px 52px; cursor: pointer;
-  box-shadow: 0 8px 32px rgba(29,185,84,0.45), 0 0 0 0 rgba(29,185,84,0.3);
-  transition: transform 0.15s, box-shadow 0.2s;
-}
-#spin-btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
-  border-radius: inherit;
-}
-#spin-btn:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 14px 44px rgba(29,185,84,0.6), 0 0 0 8px rgba(29,185,84,0.1);
-}
-#spin-btn:active { transform: scale(0.97); }
-#spin-btn.spinning { animation: pulse-btn 0.6s ease infinite alternate; cursor: wait; }
-
-@keyframes pulse-btn {
-  from { box-shadow: 0 8px 32px rgba(29,185,84,0.4); }
-  to   { box-shadow: 0 8px 52px rgba(29,185,84,0.8); }
-}
-
-.sub-btns {
-  display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-}
-.sub-btn {
-  background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-  border-radius: 100px; color: var(--sub); font-family: var(--font);
-  font-size: 13px; font-weight: 500; padding: 10px 22px;
-  cursor: pointer; transition: all 0.2s;
-}
-.sub-btn:hover {
-  background: rgba(29,185,84,0.1); border-color: rgba(29,185,84,0.3);
-  color: var(--g);
-}
-
-/* ─── Result Card ────────────────────────────────── */
-#result {
-  margin-bottom: 64px;
-  animation: fadeUp 0.5s ease both;
-  display: none;
-}
-#result.visible { display: block; }
-
-.result-card {
-  background: var(--s1);
-  border: 1px solid rgba(29,185,84,0.2);
-  border-radius: 24px; overflow: hidden;
-  box-shadow: 0 0 60px rgba(29,185,84,0.08);
-}
-
-.result-top {
-  display: grid; grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid var(--border);
-}
-.result-section {
-  padding: 28px 32px;
-}
-.result-section:first-child {
-  border-right: 1px solid var(--border);
-}
-
-.rs-label {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--g); margin-bottom: 10px;
-}
-.rs-main {
-  font-size: 1.4rem; font-weight: 800; letter-spacing: -0.02em;
-  line-height: 1.2; margin-bottom: 8px;
-}
-.rs-sub {
-  font-size: 13px; color: var(--sub); display: flex; align-items: center; gap: 6px;
-}
-.rs-sub svg { opacity: 0.6; }
-
-.rs-dish {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(29,185,84,0.1); border: 1px solid rgba(29,185,84,0.2);
-  border-radius: 100px; padding: 4px 12px;
-  font-size: 12px; font-weight: 600; color: var(--g); margin-top: 10px;
-}
-
-/* ─── Restaurants ────────────────────────────────── */
-.resto-section {
-  padding: 28px 32px;
-}
-.resto-title {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--dim); margin-bottom: 18px;
-}
-
-.resto-loading {
-  display: flex; align-items: center; gap: 12px;
-  color: var(--sub); font-size: 14px;
-  padding: 12px 0;
-}
-.dots { display: flex; gap: 5px; }
-.dot {
-  width: 7px; height: 7px; border-radius: 50%; background: var(--g);
-  animation: bounce 1.1s infinite;
-}
-.dot:nth-child(2) { animation-delay: 0.18s; }
-.dot:nth-child(3) { animation-delay: 0.36s; }
-@keyframes bounce {
-  0%,80%,100% { transform:translateY(0);opacity:.4; }
-  40% { transform:translateY(-7px);opacity:1; }
-}
-
-.resto-list { display: flex; flex-direction: column; gap: 14px; }
-
-.resto-item {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 16px 18px; background: var(--s2);
-  border-radius: 14px; border: 1px solid var(--border);
-  transition: border-color 0.2s, background 0.2s;
-}
-.resto-item:hover {
-  border-color: rgba(29,185,84,0.25);
-  background: var(--s3);
-}
-
-.resto-num {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  background: linear-gradient(135deg, #1DB954, #158a3e);
-  color: #000; font-size: 12px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 10px rgba(29,185,84,0.35);
-  margin-top: 1px;
-}
-
-.resto-info { flex: 1; min-width: 0; }
-.resto-name { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
-
-.resto-rating {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
-}
-.stars { color: #1DB954; font-size: 12px; letter-spacing: 1px; }
-.rating-num { font-size: 13px; font-weight: 700; color: var(--text); }
-.review-count { font-size: 12px; color: var(--dim); }
-
-.resto-review {
-  font-size: 13px; color: var(--sub); line-height: 1.5;
-  font-style: italic; margin-bottom: 8px;
-}
-.resto-dish {
-  font-size: 12px; font-weight: 600; color: var(--g);
-  display: flex; align-items: center; gap: 5px;
-}
-
-/* ─── Stats strip ────────────────────────────────── */
-.stats-strip {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
-  margin-bottom: 64px;
-  animation: fadeUp 0.6s 0.4s ease both;
-}
-.stat {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: 18px; padding: 20px; text-align: center;
-  transition: border-color 0.2s;
-}
-.stat:hover { border-color: rgba(29,185,84,0.25); }
-.stat-n {
-  font-size: 2rem; font-weight: 900; letter-spacing: -0.03em;
-  background: linear-gradient(135deg, #fff, #1DB954);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.stat-l { font-size: 11px; color: var(--dim); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em; }
-
-/* ─── How it works ───────────────────────────────── */
-.section-title {
-  font-size: 1.8rem; font-weight: 900; letter-spacing: -0.03em;
-  margin-bottom: 32px;
-}
-.section-title span { color: var(--g); }
-
-.how-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
-  margin-bottom: 64px;
-}
-.how-card {
-  background: var(--s1); border: 1px solid var(--border);
-  border-radius: 18px; padding: 24px;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.how-card:hover {
-  border-color: rgba(29,185,84,0.2);
-  transform: translateY(-2px);
-}
-.how-num {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: linear-gradient(135deg, #1DB954, #158a3e);
-  color: #000; font-size: 14px; font-weight: 800;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 14px; box-shadow: 0 0 12px rgba(29,185,84,0.4);
-}
-.how-head { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
-.how-body { font-size: 13px; color: var(--sub); line-height: 1.6; }
-
-/* ─── Footer ─────────────────────────────────────── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 32px 0;
-  text-align: center;
-}
-.footer-inner {
-  max-width: 900px; margin: 0 auto; padding: 0 24px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.footer-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 14px; font-weight: 800; color: var(--sub);
-  text-decoration: none;
-}
-.footer-copy { font-size: 12px; color: var(--dim); }
-
-/* ─── Toasts ─────────────────────────────────────── */
-#toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
-  background: var(--s3); border: 1px solid var(--border); border-radius: 100px;
-  padding: 12px 24px; font-size: 13px; font-weight: 500; color: var(--sub);
-  z-index: 999; opacity: 0; transition: opacity 0.3s;
-  pointer-events: none;
-}
-#toast.show { opacity: 1; }
-
-/* ─── Responsive ─────────────────────────────────── */
-@media (max-width: 640px) {
-  h1 { font-size: 2.6rem; }
-  .result-top { grid-template-columns: 1fr; }
-  .result-section:first-child { border-right: none; border-bottom: 1px solid var(--border); }
-  .stats-strip { grid-template-columns: 1fr 1fr; }
-  .how-grid { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  .footer-inner { flex-direction: column; gap: 12px; }
+html{scroll-behavior:smooth;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+#blobs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.blob{position:absolute;border-radius:50%;filter:blur(130px);animation:drift 20s ease-in-out infinite alternate;}
+.b1{width:700px;height:700px;background:#1DB954;opacity:.13;top:-200px;left:-200px;}
+.b2{width:500px;height:500px;background:#1a4aff;opacity:.10;bottom:-100px;right:-100px;animation-delay:-7s;}
+.b3{width:400px;height:400px;background:#b31db9;opacity:.09;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s;}
+@keyframes drift{from{transform:translate(0,0) scale(1);}to{transform:translate(50px,30px) scale(1.1);}}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px;}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-inner{max-width:900px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1DB954,#1a4aff,#b31db9);display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--glow);flex-shrink:0;}
+.nav-icon svg{width:18px;height:18px;}
+.nav-brand{font-size:1rem;font-weight:800;letter-spacing:-0.02em;background:linear-gradient(90deg,#1DB954,#1ED760);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{font-size:13px;font-weight:500;color:var(--sub);text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+#key-banner{background:rgba(29,185,84,0.08);border:1px solid rgba(29,185,84,0.2);border-radius:16px;padding:20px 24px;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;}
+.key-title{font-size:13px;font-weight:700;color:var(--g);display:flex;align-items:center;gap:8px;}
+.key-row{display:flex;gap:10px;}
+#api-key-input{flex:1;background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color 0.2s;}
+#api-key-input:focus{border-color:rgba(29,185,84,0.4);}
+#api-key-input::placeholder{color:var(--dim);}
+#save-key-btn{background:var(--g);border:none;border-radius:10px;color:#000;font-family:var(--font);font-size:13px;font-weight:700;padding:10px 20px;cursor:pointer;transition:background 0.2s;white-space:nowrap;}
+#save-key-btn:hover{background:var(--g2);}
+.key-note{font-size:11px;color:var(--dim);line-height:1.5;}
+.key-note a{color:var(--g);}
+#key-saved{display:none;align-items:center;gap:8px;font-size:13px;color:var(--g);font-weight:600;}
+#change-key{background:none;border:1px solid var(--border);border-radius:8px;color:var(--sub);font-size:12px;padding:4px 12px;cursor:pointer;font-family:var(--font);margin-left:auto;}
+#change-key:hover{border-color:rgba(29,185,84,0.3);color:var(--g);}
+.hero{text-align:center;padding:80px 0 48px;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(29,185,84,0.1);border:1px solid rgba(29,185,84,0.25);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--g);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;animation:fadeUp 0.6s ease both;}
+.hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 6px var(--g);display:inline-block;}
+h1{font-size:clamp(2.8rem,8vw,5.5rem);font-weight:900;letter-spacing:-0.04em;line-height:0.95;background:linear-gradient(135deg,#fff 20%,#1DB954 55%,#1a4aff 90%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px;animation:fadeUp 0.6s 0.1s ease both;}
+.hero-sub{font-size:1.1rem;color:var(--sub);font-weight:400;max-width:440px;margin:0 auto 44px;line-height:1.65;animation:fadeUp 0.6s 0.2s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.spin-wrap{display:flex;flex-direction:column;align-items:center;gap:16px;animation:fadeUp 0.6s 0.3s ease both;margin-bottom:48px;}
+#spin-btn{position:relative;overflow:hidden;background:linear-gradient(135deg,#1DB954,#158a3e);border:none;border-radius:100px;color:#000;font-family:var(--font);font-size:1.15rem;font-weight:800;letter-spacing:-0.01em;padding:20px 52px;cursor:pointer;box-shadow:0 8px 32px rgba(29,185,84,0.45);transition:transform 0.15s,box-shadow 0.2s;}
+#spin-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);border-radius:inherit;}
+#spin-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 14px 44px rgba(29,185,84,0.6);}
+#spin-btn:active{transform:scale(0.97);}
+#spin-btn:disabled{opacity:0.6;cursor:wait;}
+#spin-btn.spinning{animation:pulse-btn 0.6s ease infinite alternate;}
+@keyframes pulse-btn{from{box-shadow:0 8px 32px rgba(29,185,84,0.4);}to{box-shadow:0 8px 52px rgba(29,185,84,0.8);}}
+.sub-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.sub-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:100px;color:var(--sub);font-family:var(--font);font-size:13px;font-weight:500;padding:10px 22px;cursor:pointer;transition:all 0.2s;}
+.sub-btn:hover{background:rgba(29,185,84,0.1);border-color:rgba(29,185,84,0.3);color:var(--g);}
+#result{margin-bottom:64px;display:none;}
+#result.visible{display:block;animation:fadeUp 0.5s ease both;}
+.result-card{background:var(--s1);border:1px solid rgba(29,185,84,0.2);border-radius:24px;overflow:hidden;box-shadow:0 0 60px rgba(29,185,84,0.08);}
+.result-top{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);}
+.result-section{padding:28px 32px;}
+.result-section:first-child{border-right:1px solid var(--border);}
+.rs-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--g);margin-bottom:10px;}
+.rs-main{font-size:1.4rem;font-weight:800;letter-spacing:-0.02em;line-height:1.2;margin-bottom:8px;}
+.rs-sub{font-size:13px;color:var(--sub);display:flex;align-items:center;gap:6px;}
+.rs-dish{display:inline-flex;align-items:center;gap:6px;background:rgba(29,185,84,0.1);border:1px solid rgba(29,185,84,0.2);border-radius:100px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--g);margin-top:10px;}
+.resto-section{padding:28px 32px;}
+.resto-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--dim);margin-bottom:18px;}
+.resto-loading{display:flex;align-items:center;gap:12px;color:var(--sub);font-size:14px;padding:12px 0;}
+.dots{display:flex;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:bounce 1.1s infinite;}
+.dot:nth-child(2){animation-delay:0.18s;}.dot:nth-child(3){animation-delay:0.36s;}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4;}40%{transform:translateY(-7px);opacity:1;}}
+.resto-list{display:flex;flex-direction:column;gap:14px;}
+.resto-item{display:flex;gap:16px;align-items:flex-start;padding:16px 18px;background:var(--s2);border-radius:14px;border:1px solid var(--border);transition:border-color 0.2s,background 0.2s;}
+.resto-item:hover{border-color:rgba(29,185,84,0.25);background:var(--s3);}
+.resto-num{width:28px;height:28px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#1DB954,#158a3e);color:#000;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(29,185,84,0.35);margin-top:1px;}
+.resto-info{flex:1;min-width:0;}
+.resto-name{font-size:15px;font-weight:700;margin-bottom:5px;}
+.resto-rating{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.stars{color:#1DB954;font-size:12px;letter-spacing:1px;}
+.rating-num{font-size:13px;font-weight:700;color:var(--text);}
+.review-count{font-size:12px;color:var(--dim);}
+.resto-review{font-size:13px;color:var(--sub);line-height:1.5;font-style:italic;margin-bottom:8px;}
+.resto-dish{font-size:12px;font-weight:600;color:var(--g);display:flex;align-items:center;gap:5px;}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:64px;animation:fadeUp 0.6s 0.4s ease both;}
+.stat{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:20px;text-align:center;transition:border-color 0.2s;}
+.stat:hover{border-color:rgba(29,185,84,0.25);}
+.stat-n{font-size:2rem;font-weight:900;letter-spacing:-0.03em;background:linear-gradient(135deg,#fff,#1DB954);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-l{font-size:11px;color:var(--dim);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em;}
+.section-title{font-size:1.8rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:32px;}
+.section-title span{color:var(--g);}
+.how-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:64px;}
+.how-card{background:var(--s1);border:1px solid var(--border);border-radius:18px;padding:24px;transition:border-color 0.2s,transform 0.2s;}
+.how-card:hover{border-color:rgba(29,185,84,0.2);transform:translateY(-2px);}
+.how-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1DB954,#158a3e);color:#000;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 0 12px rgba(29,185,84,0.4);}
+.how-head{font-size:15px;font-weight:700;margin-bottom:8px;}
+.how-body{font-size:13px;color:var(--sub);line-height:1.6;}
+footer{border-top:1px solid var(--border);padding:32px 0;}
+.footer-inner{max-width:900px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:800;color:var(--sub);text-decoration:none;}
+.footer-copy{font-size:12px;color:var(--dim);}
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--s3);border:1px solid var(--border);border-radius:100px;padding:12px 24px;font-size:13px;font-weight:500;color:var(--sub);z-index:999;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+#toast.show{opacity:1;}
+@media(max-width:640px){
+  h1{font-size:2.6rem;}
+  .result-top{grid-template-columns:1fr;}
+  .result-section:first-child{border-right:none;border-bottom:1px solid var(--border);}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .how-grid{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .footer-inner{flex-direction:column;gap:12px;}
+  .key-row{flex-direction:column;}
 }
 </style>
 </head>
 <body>
-
-<div id="blobs">
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-</div>
-
-<!-- Nav -->
+<div id="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <nav>
   <div class="nav-inner">
     <a class="nav-logo" href="#">
       <div class="nav-icon">
-        <svg viewBox="0 0 34 34" fill="none">
-          <path d="M17 3C12.03 3 8 7.03 8 12C8 18.5 17 31 17 31C17 31 26 18.5 26 12C26 7.03 21.97 3 17 3Z" fill="white" fill-opacity="0.95"/>
-          <circle cx="17" cy="12" r="4" fill="#1DB954"/>
-        </svg>
+        <svg viewBox="0 0 34 34" fill="none"><path d="M17 3C12.03 3 8 7.03 8 12C8 18.5 17 31 17 31C17 31 26 18.5 26 12C26 7.03 21.97 3 17 3Z" fill="white" fill-opacity="0.95"/><circle cx="17" cy="12" r="4" fill="#1DB954"/></svg>
       </div>
       <span class="nav-brand">Go Where Ah?</span>
     </a>
-    <div class="nav-links">
-      <a href="#how">How it works</a>
-      <a href="#malls">Malls</a>
-      <a href="#cuisines">Cuisines</a>
-    </div>
+    <div class="nav-links"><a href="#how">How it works</a></div>
   </div>
 </nav>
-
-<!-- Main -->
 <main class="wrap">
-
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-badge"><span></span> Singapore Outing Roulette</div>
     <h1>Go Where<br/>Ah?</h1>
     <p class="hero-sub">Cannot decide where to go or what to eat? Let fate settle it for you lah — one spin, full plan sorted. 🎲</p>
   </section>
 
-  <!-- Spin Controls -->
+  <div id="key-banner">
+    <div class="key-title">🔑 Enter your Anthropic API Key to enable restaurant picks</div>
+    <div id="key-input-area">
+      <div class="key-row">
+        <input id="api-key-input" type="password" placeholder="sk-ant-api03-..." autocomplete="off"/>
+        <button id="save-key-btn" onclick="saveKey()">Save Key</button>
+      </div>
+      <div class="key-note">
+        Your key is saved only in your browser — it never leaves your device.<br/>
+        Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key
+      </div>
+    </div>
+    <div id="key-saved">
+      ✅ API key saved — you're ready to spin!
+      <button id="change-key" onclick="changeKey()">Change Key</button>
+    </div>
+  </div>
+
   <div class="spin-wrap">
     <button id="spin-btn" onclick="spinAll()">🎲 &nbsp;Spin Everything</button>
     <div class="sub-btns">
@@ -429,7 +168,6 @@ footer {
     </div>
   </div>
 
-  <!-- Result -->
   <div id="result">
     <div class="result-card">
       <div class="result-top">
@@ -449,17 +187,11 @@ footer {
       </div>
       <div class="resto-section" id="resto-section" style="display:none">
         <div class="resto-title">Recommended Restaurants</div>
-        <div id="resto-body">
-          <div class="resto-loading">
-            <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-            Finding kakis' favourite spots...
-          </div>
-        </div>
+        <div id="resto-body"></div>
       </div>
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats-strip">
     <div class="stat"><div class="stat-n">55+</div><div class="stat-l">SG Malls</div></div>
     <div class="stat"><div class="stat-n">21</div><div class="stat-l">Cuisines</div></div>
@@ -467,33 +199,15 @@ footer {
     <div class="stat"><div class="stat-n">AI</div><div class="stat-l">Powered</div></div>
   </div>
 
-  <!-- How it works -->
   <section id="how">
     <div class="section-title">How it <span>works</span></div>
     <div class="how-grid">
-      <div class="how-card">
-        <div class="how-num">1</div>
-        <div class="how-head">Hit Spin</div>
-        <div class="how-body">Click the big green button and we'll instantly pick a mall and cuisine combo for you.</div>
-      </div>
-      <div class="how-card">
-        <div class="how-num">2</div>
-        <div class="how-head">AI Searches the Web</div>
-        <div class="how-body">Our backend calls the Anthropic API with live web search to find real restaurants in that mall.</div>
-      </div>
-      <div class="how-card">
-        <div class="how-num">3</div>
-        <div class="how-head">Get Your Picks</div>
-        <div class="how-body">2–3 restaurant recommendations appear with Google ratings, review counts, and must-try dishes.</div>
-      </div>
-      <div class="how-card">
-        <div class="how-num">4</div>
-        <div class="how-head">Go Enjoy!</div>
-        <div class="how-body">Settle liao — no more "you decide", "no you decide" — just go and have a good meal!</div>
-      </div>
+      <div class="how-card"><div class="how-num">1</div><div class="how-head">Enter API Key</div><div class="how-body">Paste your free Anthropic API key once. Saved only in your browser — never on any server.</div></div>
+      <div class="how-card"><div class="how-num">2</div><div class="how-head">Hit Spin</div><div class="how-body">Click the big green button and we instantly pick a random mall and cuisine for you.</div></div>
+      <div class="how-card"><div class="how-num">3</div><div class="how-head">AI Searches Live</div><div class="how-body">Claude searches the web for real restaurants in that mall matching your cuisine, with Google ratings.</div></div>
+      <div class="how-card"><div class="how-num">4</div><div class="how-head">Go Enjoy!</div><div class="how-body">Settle liao — no more "you decide, no you decide" — just go and have a good meal!</div></div>
     </div>
   </section>
-
 </main>
 
 <footer>
@@ -507,153 +221,67 @@ footer {
     <div class="footer-copy">Made with 💚 for Singaporeans who cannot decide</div>
   </div>
 </footer>
-
 <div id="toast"></div>
 
 <script>
-// ── Config ─────────────────────────────────────────────
-// Change this to your backend URL once deployed (e.g. https://your-app.onrender.com)
-const API_BASE = "https://gowhereah.onrender.com";
+const MALLS=[["ION Orchard","Orchard MRT"],["Ngee Ann City (Takashimaya)","Orchard MRT"],["313@Somerset","Somerset MRT"],["Plaza Singapura","Dhoby Ghaut MRT"],["The Centrepoint","Somerset MRT"],["Paragon","Orchard MRT"],["Marina Bay Sands Shoppes","Bayfront MRT"],["Raffles City Shopping Centre","City Hall MRT"],["Suntec City Mall","Esplanade MRT"],["Bugis Junction","Bugis MRT"],["Funan","City Hall MRT"],["VivoCity","HarbourFront MRT"],["Parkway Parade","Marine Parade"],["Paya Lebar Quarter (PLQ)","Paya Lebar MRT"],["Tampines Mall","Tampines MRT"],["Century Square","Tampines MRT"],["White Sands","Pasir Ris MRT"],["Bedok Mall","Bedok MRT"],["Downtown East","Pasir Ris MRT"],["Nex","Serangoon MRT"],["Compass One","Sengkang MRT"],["Hougang Mall","Hougang MRT"],["Northpoint City","Yishun MRT"],["Causeway Point","Woodlands MRT"],["AMK Hub","Ang Mo Kio MRT"],["JEM","Jurong East MRT"],["Westgate","Jurong East MRT"],["Jurong Point","Boon Lay MRT"],["Lot One","Choa Chu Kang MRT"],["Great World City","Great World MRT"],["Tiong Bahru Plaza","Tiong Bahru MRT"],["Clementi Mall","Clementi MRT"],["Holland Village Shopping Mall","Holland Village MRT"],["Thomson Plaza","Marymount MRT"],["Bishan Junction 8","Bishan MRT"],["i12 Katong","Paya Lebar MRT"],["Tampines 1","Tampines MRT"],["IMM","Jurong East MRT"],["West Mall","Bukit Batok MRT"],["Novena Square / United Square","Novena MRT"],["Toa Payoh HDB Hub","Toa Payoh MRT"],["Sun Plaza","Sembawang MRT"],["Wisma Atria","Orchard MRT"],["Tanglin Mall","Orchard MRT"],["HarbourFront Centre","HarbourFront MRT"]];
+const CUISINES=[["Chinese",["Dim Sum","Roast Duck","Char Kway Teow","Hainanese Chicken Rice","Wonton Noodles"]],["Peranakan / Nyonya",["Laksa","Ayam Buah Keluak","Kueh Pie Tee","Babi Pongteh","Chendol"]],["Malay",["Nasi Lemak","Satay","Rendang","Mee Rebus","Gado-Gado"]],["Indian",["Roti Prata","Biryani","Fish Head Curry","Dosai","Tandoori Chicken"]],["Japanese",["Sushi and Sashimi","Ramen","Tonkatsu","Yakitori","Udon"]],["Korean",["Korean BBQ","Bibimbap","Tteokbokki","Kimchi Jjigae","Japchae"]],["Thai",["Pad Thai","Green Curry","Tom Yum","Mango Sticky Rice","Som Tum"]],["Vietnamese",["Pho","Banh Mi","Bun Bo Hue","Fresh Spring Rolls","Bun Cha"]],["Indonesian",["Nasi Goreng","Soto Ayam","Gado-Gado","Mie Goreng","Martabak"]],["Italian",["Pasta Carbonara","Margherita Pizza","Risotto","Tiramisu","Osso Buco"]],["Western",["Fish and Chips","Shepherd's Pie","Full English Breakfast","Bangers and Mash","Roast"]],["American",["Burgers","BBQ Ribs","Mac and Cheese","Buffalo Wings","Clam Chowder"]],["Middle Eastern",["Shawarma","Falafel","Hummus","Kebab","Lamb Biryani"]],["Vegetarian / Vegan",["Buddha Bowl","Jackfruit Curry","Falafel Wrap","Mushroom Wellington","Cauliflower Steak"]],["Seafood",["Chilli Crab","Black Pepper Crab","Grilled Fish","Oysters","Lobster Thermidor"]],["Fusion / Modern Asian",["Salted Egg Croissant","Truffle Soba","Laksa Pasta","Miso Black Cod","Matcha Tiramisu"]],["Cafe / Brunch",["Eggs Benedict","Avocado Toast","Pancakes","Acai Bowl","Shakshuka"]],["Hotpot / Steamboat",["Mala Hotpot","Taiwanese Shabu-Shabu","Yong Tau Foo","Tom Yum Steamboat","Japanese Shabu-Shabu"]],["Mexican",["Tacos","Burritos","Nachos with Guacamole","Enchiladas","Quesadillas"]],["French",["Steak Frites","Coq au Vin","Creme Brulee","Croissant","Bouillabaisse"]],["Filipino",["Adobo","Sinigang","Lechon","Kare-Kare","Halo-Halo"]]];
 
-// ── Helpers ─────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2800);
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
+function starsHtml(r){const f=Math.floor(r),h=(r-f)>=0.5?1:0,e=5-f-h;return"⭐".repeat(f)+(h?"✨":"")+"☆".repeat(e);}
+function showToast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000);}
+function setSpinning(on){const b=document.getElementById("spin-btn");b.classList.toggle("spinning",on);b.disabled=on;b.innerHTML=on?"✦ &nbsp;Finding your spot...":"🎲 &nbsp;Spin Everything";}
+
+function saveKey(){
+  const v=document.getElementById("api-key-input").value.trim();
+  if(!v.startsWith("sk-ant-")){showToast("❌ Key should start with sk-ant-");return;}
+  localStorage.setItem("gwa_key",v);showKeySaved();showToast("✅ Key saved! Ready to spin.");
+}
+function showKeySaved(){document.getElementById("key-input-area").style.display="none";document.getElementById("key-saved").style.display="flex";}
+function changeKey(){document.getElementById("key-input-area").style.display="block";document.getElementById("key-saved").style.display="none";document.getElementById("api-key-input").value="";localStorage.removeItem("gwa_key");}
+function getKey(){return localStorage.getItem("gwa_key")||"";}
+window.addEventListener("load",()=>{if(getKey())showKeySaved();});
+
+async function fetchRestaurants(mall,cuisine){
+  const key=getKey();if(!key)return[];
+  const prompt=`You are a Singapore food expert. Search the web and find 2-3 real restaurants serving ${cuisine} food inside or directly attached to ${mall} in Singapore.\n\nRules:\n- Only include restaurants that genuinely exist in or next to that mall.\n- Prefer Google ratings between 3.5 and 5.0.\n- If fewer than 2 exist for that cuisine, suggest nearby alternatives.\n\nReply in EXACTLY this format, one line per restaurant, no other text:\nRESTAURANT_1|Name|4.2|320|Great for families, can get crowded|Har Gow\nRESTAURANT_2|Name|4.0|180|Cosy spot, generous portions|Tonkatsu Set\nRESTAURANT_3|Name|4.5|95|Hidden gem, authentic flavours|Laksa`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,tools:[{type:"web_search_20250305",name:"web_search"}],messages:[{role:"user",content:prompt}]})});
+    if(!res.ok){const e=await res.json();console.error(e);if(res.status===401)showToast("❌ Invalid API key — please re-enter it");return[];}
+    const data=await res.json();
+    const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    const out=[];
+    for(const line of text.split("\n")){
+      if(!line.startsWith("RESTAURANT_"))continue;
+      const p=line.split("|");if(p.length<6)continue;
+      const[,name,rs,reviews,summary,dish]=p;
+      out.push({name:name.trim(),rating:parseFloat(rs)||4.0,reviews:reviews.trim(),summary:summary.trim(),dish:dish.trim()});
+    }
+    return out;
+  }catch(e){console.error(e);return[];}
 }
 
-function starsHtml(rating) {
-  const full = Math.floor(rating);
-  const half = (rating - full) >= 0.5 ? 1 : 0;
-  const empty = 5 - full - half;
-  return "⭐".repeat(full) + (half ? "✨" : "") + "☆".repeat(empty);
+function renderRestaurants(list){
+  const el=document.getElementById("resto-body");
+  if(!list||!list.length){el.innerHTML=`<p style="color:var(--dim);font-size:13px;padding:8px 0">Could not load suggestions — check your API key or try again!</p>`;return;}
+  el.innerHTML=`<div class="resto-list">${list.map((r,i)=>`<div class="resto-item"><div class="resto-num">${i+1}</div><div class="resto-info"><div class="resto-name">${r.name}</div><div class="resto-rating"><span class="stars">${starsHtml(r.rating)}</span><span class="rating-num">${r.rating}</span><span class="review-count">· ${r.reviews} reviews</span></div><div class="resto-review">"${r.summary}"</div><div class="resto-dish">🥢 Must-try: ${r.dish}</div></div></div>`).join("")}</div>`;
 }
 
-function showResult() {
-  const el = document.getElementById("result");
-  el.classList.add("visible");
-  el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+async function spinAll(){
+  if(!getKey()){showToast("⚠️ Please enter your Anthropic API key first!");document.getElementById("api-key-input").focus();return;}
+  const[mall,mrt]=rand(MALLS);const[cuisine,dishes]=rand(CUISINES);const dish=rand(dishes);
+  document.getElementById("r-mall").textContent=mall;
+  document.getElementById("r-mrt").textContent=mrt;
+  document.getElementById("r-cuisine").textContent=cuisine;
+  document.getElementById("r-dish").textContent="💡 Try: "+dish;
+  const rs=document.getElementById("resto-section");const rb=document.getElementById("resto-body");
+  rs.style.display="block";
+  rb.innerHTML=`<div class="resto-loading"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>Finding kakis' favourite spots...</div>`;
+  const result=document.getElementById("result");result.classList.add("visible");result.scrollIntoView({behavior:"smooth",block:"nearest"});
+  setSpinning(true);const restaurants=await fetchRestaurants(mall,cuisine);setSpinning(false);renderRestaurants(restaurants);
 }
-
-function setSpinning(on) {
-  const btn = document.getElementById("spin-btn");
-  if (on) { btn.classList.add("spinning"); btn.disabled = true; btn.textContent = "✦  Spinning..."; }
-  else     { btn.classList.remove("spinning"); btn.disabled = false; btn.innerHTML = "🎲 &nbsp;Spin Everything"; }
-}
-
-// ── Spin All ────────────────────────────────────────────
-async function spinAll() {
-  setSpinning(true);
-  try {
-    // 1. Get mall + cuisine
-    const res = await fetch(`${API_BASE}/api/spin`);
-    const data = await res.json();
-
-    document.getElementById("r-mall").textContent    = data.mall;
-    document.getElementById("r-mrt").textContent     = data.mrt;
-    document.getElementById("r-cuisine").textContent = data.cuisine;
-    document.getElementById("r-dish").textContent    = "💡 Try: " + data.dish;
-
-    const restoSection = document.getElementById("resto-section");
-    const restoBody    = document.getElementById("resto-body");
-
-    restoSection.style.display = "block";
-    restoBody.innerHTML = `
-      <div class="resto-loading">
-        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-        Finding kakis' favourite spots...
-      </div>`;
-
-    showResult();
-    setSpinning(false);
-
-    // 2. Fetch restaurants
-    const rRes  = await fetch(`${API_BASE}/api/restaurants?mall=${encodeURIComponent(data.mall)}&cuisine=${encodeURIComponent(data.cuisine)}`);
-    const rData = await rRes.json();
-    renderRestaurants(rData.restaurants || []);
-
-  } catch (e) {
-    setSpinning(false);
-    showToast("Could not reach the backend — is it running?");
-    renderOfflineResult();
-  }
-}
-
-async function spinMallOnly() {
-  try {
-    const res  = await fetch(`${API_BASE}/api/mall`);
-    const data = await res.json();
-    document.getElementById("r-mall").textContent = data.mall;
-    document.getElementById("r-mrt").textContent  = data.mrt;
-    document.getElementById("r-cuisine").textContent = "—";
-    document.getElementById("r-dish").textContent    = "—";
-    document.getElementById("resto-section").style.display = "none";
-    showResult();
-  } catch (e) {
-    showToast("Could not reach the backend — is it running?");
-  }
-}
-
-async function spinCuisineOnly() {
-  try {
-    const res  = await fetch(`${API_BASE}/api/cuisine`);
-    const data = await res.json();
-    document.getElementById("r-mall").textContent    = "—";
-    document.getElementById("r-mrt").textContent     = "—";
-    document.getElementById("r-cuisine").textContent = data.cuisine;
-    document.getElementById("r-dish").textContent    = "💡 Try: " + data.dish;
-    document.getElementById("resto-section").style.display = "none";
-    showResult();
-  } catch (e) {
-    showToast("Could not reach the backend — is it running?");
-  }
-}
-
-function renderRestaurants(list) {
-  const el = document.getElementById("resto-body");
-  if (!list || list.length === 0) {
-    el.innerHTML = `<p style="color:var(--dim);font-size:13px;">Could not load suggestions right now — try again!</p>`;
-    return;
-  }
-  el.innerHTML = `<div class="resto-list">${list.map((r, i) => `
-    <div class="resto-item">
-      <div class="resto-num">${i + 1}</div>
-      <div class="resto-info">
-        <div class="resto-name">${r.name}</div>
-        <div class="resto-rating">
-          <span class="stars">${starsHtml(r.rating)}</span>
-          <span class="rating-num">${r.rating}</span>
-          <span class="review-count">· ${r.reviews} reviews</span>
-        </div>
-        <div class="resto-review">"${r.summary}"</div>
-        <div class="resto-dish">🥢 Must-try: ${r.dish}</div>
-      </div>
-    </div>`).join("")}</div>`;
-}
-
-// Offline demo fallback (when backend isn't running)
-function renderOfflineResult() {
-  const malls = [
-    ["ION Orchard","Orchard MRT"],["VivoCity","HarbourFront MRT"],
-    ["Bugis Junction","Bugis MRT"],["Tampines Mall","Tampines MRT"],
-    ["JEM","Jurong East MRT"],["Nex","Serangoon MRT"],
-  ];
-  const cuisines = [
-    ["Japanese","Tonkatsu"],["Chinese","Dim Sum"],["Korean","Korean BBQ"],
-    ["Peranakan","Laksa"],["Cafe / Brunch","Eggs Benedict"],["Malay","Nasi Lemak"],
-  ];
-  const [mall, mrt]  = malls[Math.floor(Math.random()*malls.length)];
-  const [cuisine, dish] = cuisines[Math.floor(Math.random()*cuisines.length)];
-
-  document.getElementById("r-mall").textContent    = mall;
-  document.getElementById("r-mrt").textContent     = mrt;
-  document.getElementById("r-cuisine").textContent = cuisine;
-  document.getElementById("r-dish").textContent    = "💡 Try: " + dish;
-  document.getElementById("resto-section").style.display = "block";
-  document.getElementById("resto-body").innerHTML  =
-    `<p style="color:var(--dim);font-size:13px;">⚠️ Backend offline — connect your Flask server to see live restaurant picks!</p>`;
-  showResult();
-}
+function spinMallOnly(){const[mall,mrt]=rand(MALLS);document.getElementById("r-mall").textContent=mall;document.getElementById("r-mrt").textContent=mrt;document.getElementById("r-cuisine").textContent="—";document.getElementById("r-dish").textContent="—";document.getElementById("resto-section").style.display="none";document.getElementById("result").classList.add("visible");}
+function spinCuisineOnly(){const[cuisine,dishes]=rand(CUISINES);const dish=rand(dishes);document.getElementById("r-mall").textContent="—";document.getElementById("r-mrt").textContent="—";document.getElementById("r-cuisine").textContent=cuisine;document.getElementById("r-dish").textContent="💡 Try: "+dish;document.getElementById("resto-section").style.display="none";document.getElementById("result").classList.add("visible");}
 </script>
 </body>
 </html>
