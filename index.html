@@ -32,19 +32,6 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.85);backdrop-fi
 .nav-links{display:flex;gap:28px;}
 .nav-links a{font-size:13px;font-weight:500;color:var(--sub);text-decoration:none;transition:color 0.2s;}
 .nav-links a:hover{color:var(--text);}
-#key-banner{background:rgba(29,185,84,0.08);border:1px solid rgba(29,185,84,0.2);border-radius:16px;padding:20px 24px;margin-bottom:32px;display:flex;flex-direction:column;gap:12px;}
-.key-title{font-size:13px;font-weight:700;color:var(--g);display:flex;align-items:center;gap:8px;}
-.key-row{display:flex;gap:10px;}
-#api-key-input{flex:1;background:var(--s3);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:var(--text);font-family:var(--font);font-size:13px;outline:none;transition:border-color 0.2s;}
-#api-key-input:focus{border-color:rgba(29,185,84,0.4);}
-#api-key-input::placeholder{color:var(--dim);}
-#save-key-btn{background:var(--g);border:none;border-radius:10px;color:#000;font-family:var(--font);font-size:13px;font-weight:700;padding:10px 20px;cursor:pointer;transition:background 0.2s;white-space:nowrap;}
-#save-key-btn:hover{background:var(--g2);}
-.key-note{font-size:11px;color:var(--dim);line-height:1.5;}
-.key-note a{color:var(--g);}
-#key-saved{display:none;align-items:center;gap:8px;font-size:13px;color:var(--g);font-weight:600;}
-#change-key{background:none;border:1px solid var(--border);border-radius:8px;color:var(--sub);font-size:12px;padding:4px 12px;cursor:pointer;font-family:var(--font);margin-left:auto;}
-#change-key:hover{border-color:rgba(29,185,84,0.3);color:var(--g);}
 .hero{text-align:center;padding:80px 0 48px;}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(29,185,84,0.1);border:1px solid rgba(29,185,84,0.25);border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;color:var(--g);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:28px;animation:fadeUp 0.6s ease both;}
 .hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--g);box-shadow:0 0 6px var(--g);display:inline-block;}
@@ -118,7 +105,6 @@ footer{border-top:1px solid var(--border);padding:32px 0;}
   .how-grid{grid-template-columns:1fr;}
   .nav-links{display:none;}
   .footer-inner{flex-direction:column;gap:12px;}
-  .key-row{flex-direction:column;}
 }
 </style>
 </head>
@@ -141,24 +127,6 @@ footer{border-top:1px solid var(--border);padding:32px 0;}
     <h1>Go Where<br/>Ah?</h1>
     <p class="hero-sub">Cannot decide where to go or what to eat? Let fate settle it for you lah — one spin, full plan sorted. 🎲</p>
   </section>
-
-  <div id="key-banner">
-    <div class="key-title">🔑 Enter your Anthropic API Key to enable restaurant picks</div>
-    <div id="key-input-area">
-      <div class="key-row">
-        <input id="api-key-input" type="password" placeholder="sk-ant-api03-..." autocomplete="off"/>
-        <button id="save-key-btn" onclick="saveKey()">Save Key</button>
-      </div>
-      <div class="key-note">
-        Your key is saved only in your browser — it never leaves your device.<br/>
-        Get a free key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys → Create Key
-      </div>
-    </div>
-    <div id="key-saved">
-      ✅ API key saved — you're ready to spin!
-      <button id="change-key" onclick="changeKey()">Change Key</button>
-    </div>
-  </div>
 
   <div class="spin-wrap">
     <button id="spin-btn" onclick="spinAll()">🎲 &nbsp;Spin Everything</button>
@@ -202,9 +170,9 @@ footer{border-top:1px solid var(--border);padding:32px 0;}
   <section id="how">
     <div class="section-title">How it <span>works</span></div>
     <div class="how-grid">
-      <div class="how-card"><div class="how-num">1</div><div class="how-head">Enter API Key</div><div class="how-body">Paste your free Anthropic API key once. Saved only in your browser — never on any server.</div></div>
-      <div class="how-card"><div class="how-num">2</div><div class="how-head">Hit Spin</div><div class="how-body">Click the big green button and we instantly pick a random mall and cuisine for you.</div></div>
-      <div class="how-card"><div class="how-num">3</div><div class="how-head">AI Searches Live</div><div class="how-body">Claude searches the web for real restaurants in that mall matching your cuisine, with Google ratings.</div></div>
+      <div class="how-card"><div class="how-num">1</div><div class="how-head">Hit Spin</div><div class="how-body">Click the big green button — we instantly pick a random mall and cuisine combo for you.</div></div>
+      <div class="how-card"><div class="how-num">2</div><div class="how-head">AI Searches Live</div><div class="how-body">Our server searches the web for real restaurants in that mall matching your cuisine.</div></div>
+      <div class="how-card"><div class="how-num">3</div><div class="how-head">Get Your Picks</div><div class="how-body">2–3 recommendations with Google ratings, review counts, and must-try dishes appear instantly.</div></div>
       <div class="how-card"><div class="how-num">4</div><div class="how-head">Go Enjoy!</div><div class="how-body">Settle liao — no more "you decide, no you decide" — just go and have a good meal!</div></div>
     </div>
   </section>
@@ -224,6 +192,10 @@ footer{border-top:1px solid var(--border);padding:32px 0;}
 <div id="toast"></div>
 
 <script>
+// !! IMPORTANT: After deploying your Cloudflare Worker, replace the URL below
+// with your actual Worker URL (looks like: https://worker-name.your-name.workers.dev)
+const WORKER_URL = "https://worker-abc-123.cheryllaisimin.workers.dev/";
+
 const MALLS=[["ION Orchard","Orchard MRT"],["Ngee Ann City (Takashimaya)","Orchard MRT"],["313@Somerset","Somerset MRT"],["Plaza Singapura","Dhoby Ghaut MRT"],["The Centrepoint","Somerset MRT"],["Paragon","Orchard MRT"],["Marina Bay Sands Shoppes","Bayfront MRT"],["Raffles City Shopping Centre","City Hall MRT"],["Suntec City Mall","Esplanade MRT"],["Bugis Junction","Bugis MRT"],["Funan","City Hall MRT"],["VivoCity","HarbourFront MRT"],["Parkway Parade","Marine Parade"],["Paya Lebar Quarter (PLQ)","Paya Lebar MRT"],["Tampines Mall","Tampines MRT"],["Century Square","Tampines MRT"],["White Sands","Pasir Ris MRT"],["Bedok Mall","Bedok MRT"],["Downtown East","Pasir Ris MRT"],["Nex","Serangoon MRT"],["Compass One","Sengkang MRT"],["Hougang Mall","Hougang MRT"],["Northpoint City","Yishun MRT"],["Causeway Point","Woodlands MRT"],["AMK Hub","Ang Mo Kio MRT"],["JEM","Jurong East MRT"],["Westgate","Jurong East MRT"],["Jurong Point","Boon Lay MRT"],["Lot One","Choa Chu Kang MRT"],["Great World City","Great World MRT"],["Tiong Bahru Plaza","Tiong Bahru MRT"],["Clementi Mall","Clementi MRT"],["Holland Village Shopping Mall","Holland Village MRT"],["Thomson Plaza","Marymount MRT"],["Bishan Junction 8","Bishan MRT"],["i12 Katong","Paya Lebar MRT"],["Tampines 1","Tampines MRT"],["IMM","Jurong East MRT"],["West Mall","Bukit Batok MRT"],["Novena Square / United Square","Novena MRT"],["Toa Payoh HDB Hub","Toa Payoh MRT"],["Sun Plaza","Sembawang MRT"],["Wisma Atria","Orchard MRT"],["Tanglin Mall","Orchard MRT"],["HarbourFront Centre","HarbourFront MRT"]];
 const CUISINES=[["Chinese",["Dim Sum","Roast Duck","Char Kway Teow","Hainanese Chicken Rice","Wonton Noodles"]],["Peranakan / Nyonya",["Laksa","Ayam Buah Keluak","Kueh Pie Tee","Babi Pongteh","Chendol"]],["Malay",["Nasi Lemak","Satay","Rendang","Mee Rebus","Gado-Gado"]],["Indian",["Roti Prata","Biryani","Fish Head Curry","Dosai","Tandoori Chicken"]],["Japanese",["Sushi and Sashimi","Ramen","Tonkatsu","Yakitori","Udon"]],["Korean",["Korean BBQ","Bibimbap","Tteokbokki","Kimchi Jjigae","Japchae"]],["Thai",["Pad Thai","Green Curry","Tom Yum","Mango Sticky Rice","Som Tum"]],["Vietnamese",["Pho","Banh Mi","Bun Bo Hue","Fresh Spring Rolls","Bun Cha"]],["Indonesian",["Nasi Goreng","Soto Ayam","Gado-Gado","Mie Goreng","Martabak"]],["Italian",["Pasta Carbonara","Margherita Pizza","Risotto","Tiramisu","Osso Buco"]],["Western",["Fish and Chips","Shepherd's Pie","Full English Breakfast","Bangers and Mash","Roast"]],["American",["Burgers","BBQ Ribs","Mac and Cheese","Buffalo Wings","Clam Chowder"]],["Middle Eastern",["Shawarma","Falafel","Hummus","Kebab","Lamb Biryani"]],["Vegetarian / Vegan",["Buddha Bowl","Jackfruit Curry","Falafel Wrap","Mushroom Wellington","Cauliflower Steak"]],["Seafood",["Chilli Crab","Black Pepper Crab","Grilled Fish","Oysters","Lobster Thermidor"]],["Fusion / Modern Asian",["Salted Egg Croissant","Truffle Soba","Laksa Pasta","Miso Black Cod","Matcha Tiramisu"]],["Cafe / Brunch",["Eggs Benedict","Avocado Toast","Pancakes","Acai Bowl","Shakshuka"]],["Hotpot / Steamboat",["Mala Hotpot","Taiwanese Shabu-Shabu","Yong Tau Foo","Tom Yum Steamboat","Japanese Shabu-Shabu"]],["Mexican",["Tacos","Burritos","Nachos with Guacamole","Enchiladas","Quesadillas"]],["French",["Steak Frites","Coq au Vin","Creme Brulee","Croissant","Bouillabaisse"]],["Filipino",["Adobo","Sinigang","Lechon","Kare-Kare","Halo-Halo"]]];
 
@@ -232,43 +204,22 @@ function starsHtml(r){const f=Math.floor(r),h=(r-f)>=0.5?1:0,e=5-f-h;return"⭐"
 function showToast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000);}
 function setSpinning(on){const b=document.getElementById("spin-btn");b.classList.toggle("spinning",on);b.disabled=on;b.innerHTML=on?"✦ &nbsp;Finding your spot...":"🎲 &nbsp;Spin Everything";}
 
-function saveKey(){
-  const v=document.getElementById("api-key-input").value.trim();
-  if(!v.startsWith("sk-ant-")){showToast("❌ Key should start with sk-ant-");return;}
-  localStorage.setItem("gwa_key",v);showKeySaved();showToast("✅ Key saved! Ready to spin.");
-}
-function showKeySaved(){document.getElementById("key-input-area").style.display="none";document.getElementById("key-saved").style.display="flex";}
-function changeKey(){document.getElementById("key-input-area").style.display="block";document.getElementById("key-saved").style.display="none";document.getElementById("api-key-input").value="";localStorage.removeItem("gwa_key");}
-function getKey(){return localStorage.getItem("gwa_key")||"";}
-window.addEventListener("load",()=>{if(getKey())showKeySaved();});
-
 async function fetchRestaurants(mall,cuisine){
-  const key=getKey();if(!key)return[];
-  const prompt=`You are a Singapore food expert. Search the web and find 2-3 real restaurants serving ${cuisine} food inside or directly attached to ${mall} in Singapore.\n\nRules:\n- Only include restaurants that genuinely exist in or next to that mall.\n- Prefer Google ratings between 3.5 and 5.0.\n- If fewer than 2 exist for that cuisine, suggest nearby alternatives.\n\nReply in EXACTLY this format, one line per restaurant, no other text:\nRESTAURANT_1|Name|4.2|320|Great for families, can get crowded|Har Gow\nRESTAURANT_2|Name|4.0|180|Cosy spot, generous portions|Tonkatsu Set\nRESTAURANT_3|Name|4.5|95|Hidden gem, authentic flavours|Laksa`;
   try{
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:600,tools:[{type:"web_search_20250305",name:"web_search"}],messages:[{role:"user",content:prompt}]})});
-    if(!res.ok){const e=await res.json();console.error(e);if(res.status===401)showToast("❌ Invalid API key — please re-enter it");return[];}
+    const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mall,cuisine})});
+    if(!res.ok){console.error("Worker error",res.status);return[];}
     const data=await res.json();
-    const text=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
-    const out=[];
-    for(const line of text.split("\n")){
-      if(!line.startsWith("RESTAURANT_"))continue;
-      const p=line.split("|");if(p.length<6)continue;
-      const[,name,rs,reviews,summary,dish]=p;
-      out.push({name:name.trim(),rating:parseFloat(rs)||4.0,reviews:reviews.trim(),summary:summary.trim(),dish:dish.trim()});
-    }
-    return out;
-  }catch(e){console.error(e);return[];}
+    return data.restaurants||[];
+  }catch(e){console.error(e);showToast("Could not load restaurants — try again!");return[];}
 }
 
 function renderRestaurants(list){
   const el=document.getElementById("resto-body");
-  if(!list||!list.length){el.innerHTML=`<p style="color:var(--dim);font-size:13px;padding:8px 0">Could not load suggestions — check your API key or try again!</p>`;return;}
+  if(!list||!list.length){el.innerHTML=`<p style="color:var(--dim);font-size:13px;padding:8px 0">Could not load suggestions — please try again!</p>`;return;}
   el.innerHTML=`<div class="resto-list">${list.map((r,i)=>`<div class="resto-item"><div class="resto-num">${i+1}</div><div class="resto-info"><div class="resto-name">${r.name}</div><div class="resto-rating"><span class="stars">${starsHtml(r.rating)}</span><span class="rating-num">${r.rating}</span><span class="review-count">· ${r.reviews} reviews</span></div><div class="resto-review">"${r.summary}"</div><div class="resto-dish">🥢 Must-try: ${r.dish}</div></div></div>`).join("")}</div>`;
 }
 
 async function spinAll(){
-  if(!getKey()){showToast("⚠️ Please enter your Anthropic API key first!");document.getElementById("api-key-input").focus();return;}
   const[mall,mrt]=rand(MALLS);const[cuisine,dishes]=rand(CUISINES);const dish=rand(dishes);
   document.getElementById("r-mall").textContent=mall;
   document.getElementById("r-mrt").textContent=mrt;
